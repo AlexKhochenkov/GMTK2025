@@ -1,33 +1,48 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LoopingVibing : MonoBehaviour
 {
     private RectTransform rectTransform;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Coroutine coroutine;
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        StartCoroutine(Sequence());
+        //StartCoroutine(Sequence());
     }
-    
+
+    void OnEnable()
+    {
+        if (rectTransform is null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+        coroutine = StartCoroutine(Sequence());
+    }
+
+    void OnDisable()
+    {
+        StopCoroutine(coroutine);
+        coroutine = null;
+    }
+
     private IEnumerator HandleIt()
     {
-            var time = 0f;
-            while (time < 100f)
-            {
-                time += Time.deltaTime;
-                rectTransform.Rotate(Vector3.forward, Time.deltaTime);
-            }
+        var time = 0f;
+        while (time < 100f)
+        {
+            time += Time.deltaTime;
+            rectTransform.Rotate(Vector3.forward, Time.deltaTime);
+        }
 
-            while (time < 200f)
-            {
-                time += Time.deltaTime;
-                rectTransform.Rotate(Vector3.forward, -1 * Time.deltaTime);
-            }
-            StartCoroutine(HandleIt());
-            yield return null;
+        while (time < 200f)
+        {
+            time += Time.deltaTime;
+            rectTransform.Rotate(Vector3.forward, -1 * Time.deltaTime);
+        }
+        StartCoroutine(HandleIt());
+        yield return null;
     }
 
     public IEnumerator Sequence()
