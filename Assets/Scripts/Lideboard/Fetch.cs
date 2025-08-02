@@ -20,6 +20,8 @@ namespace WebFetcher
 
         public int runs;
 
+        public float total_time;
+
         public override string ToString()
         {
             return $"nickname: {nickname}\nbest_run: {best_time}\n runs: {runs}";
