@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _animator;
     private bool isGrounded = true;
-    private bool debug = false;
 
     void Start()
     {
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
         }
         if (_rb.linearVelocity.y < 0)
         {
-            _rb.linearVelocity += Vector2.up * Physics2D.gravity.y * jumpFallForce * Time.deltaTime;
+            _rb.linearVelocity += jumpFallForce * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
     }
 
