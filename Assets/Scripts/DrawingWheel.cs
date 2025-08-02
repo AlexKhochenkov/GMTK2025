@@ -16,12 +16,10 @@ public class TexturedRing : MonoBehaviour
             return;
         }
 
-        // Настройка рендерера
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         renderer.sprite = ringSprite;
-        renderer.drawMode = SpriteDrawMode.Simple; // Изменено на Simple
+        renderer.drawMode = SpriteDrawMode.Simple;
 
-        // Генерация коллайдера
         PolygonCollider2D collider = GetComponent<PolygonCollider2D>();
         collider.pathCount = ringSprite.GetPhysicsShapeCount();
 
