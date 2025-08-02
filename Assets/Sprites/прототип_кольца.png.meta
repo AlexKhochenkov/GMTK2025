@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -116,10 +116,10 @@ TextureImporter:
       name: "\u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F_\u043A\u043E\u043B\u044C\u0446\u0430_0"
       rect:
         serializedVersion: 2
-        x: 6
-        y: 207
-        width: 806
-        height: 806
+        x: 7
+        y: 208
+        width: 804
+        height: 804
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
