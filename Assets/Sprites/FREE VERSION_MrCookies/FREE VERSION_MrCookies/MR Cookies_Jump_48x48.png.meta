@@ -131,12 +131,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 51
-        width: 17
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 14
+        y: 52
+        width: 15
+        height: 15
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -153,12 +153,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_1
       rect:
         serializedVersion: 2
-        x: 60
-        y: 51
-        width: 20
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 61
+        y: 52
+        width: 18
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -175,12 +175,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_2
       rect:
         serializedVersion: 2
-        x: 109
-        y: 54
-        width: 19
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 110
+        y: 55
+        width: 17
+        height: 19
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -197,12 +197,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_3
       rect:
         serializedVersion: 2
-        x: 12
-        y: 7
-        width: 18
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 13
+        y: 8
+        width: 16
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -219,12 +219,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_4
       rect:
         serializedVersion: 2
-        x: 62
-        y: 3
-        width: 16
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 63
+        y: 4
+        width: 14
+        height: 19
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -241,12 +241,12 @@ TextureImporter:
       name: MR Cookies_Jump_48x48_5
       rect:
         serializedVersion: 2
-        x: 111
-        y: 3
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 112
+        y: 4
+        width: 14
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -263,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7d4376265480621dda75c0cd3a8d6319
     internalID: 0
     vertices: []
     indices: 

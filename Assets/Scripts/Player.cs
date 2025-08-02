@@ -3,13 +3,26 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 9f;
+    [SerializeField] private float jumpHoldForce = 5f;
+    [SerializeField] private float maxJumpTime = 0.35f;
+    [SerializeField] private float coyoteTime = 0.1f;
+    [SerializeField] private float jumpBufferTime = 0.1f;
+    [SerializeField] private float fallMultiplier = 2.5f;
 
-    [SerializeField] private float jumpFallForce = 2.5f;
+    [Header("Visual Feedback")]
+    [SerializeField] private ParticleSystem jumpParticles;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.1f;
+    [SerializeField] private LayerMask groundLayer;
+
     private Rigidbody2D _rb;
     private Animator _animator;
-    private bool isGrounded = true;
+    private bool _isJumping;
+    private float _jumpTimeCounter;
+    private float _coyoteTimeCounter;
+    private float _jumpBufferCounter;
 
     void Start()
     {
@@ -20,30 +33,107 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        _rb.linearVelocity = new Vector2(moveInput * moveSpeed, _rb.linearVelocity.y);
-        _animator.SetFloat("Run", Math.Abs(moveInput));
-        _animator.SetBool("Jump", !isGrounded);
-        if (moveInput != 0)
+        HandleCoyoteTime();
+        HandleJumpBuffer();
+        HandleJump();
+        HandleGravity();
+        UpdateAnimations();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckGrounded();
+    }
+
+    private void HandleCoyoteTime()
+    {
+        if (IsGrounded())
         {
-            transform.localScale = new Vector3(Math.Sign(moveInput) * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            _coyoteTimeCounter = coyoteTime;
         }
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        else
         {
-            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
-            isGrounded = false;
-        }
-        if (_rb.linearVelocity.y < 0)
-        {
-            _rb.linearVelocity += jumpFallForce * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            _coyoteTimeCounter -= Time.deltaTime;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void HandleJumpBuffer()
     {
-        if (collision.collider.CompareTag("Ground"))
+        if (Input.GetButtonDown("Jump"))
         {
-            isGrounded = true;
+            _jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            _jumpBufferCounter -= Time.deltaTime;
+        }
+    }
+
+    private void HandleJump()
+    {
+        // Start jump
+        if (_jumpBufferCounter > 0 && _coyoteTimeCounter > 0)
+        {
+            _isJumping = true;
+            _jumpTimeCounter = maxJumpTime;
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+            _jumpBufferCounter = 0;
+
+            if (jumpParticles) jumpParticles.Play();
+        }
+
+        // Hold jump for variable height
+        if (Input.GetButton("Jump") && _isJumping)
+        {
+            if (_jumpTimeCounter > 0)
+            {
+                _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpHoldForce);
+                _jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                _isJumping = false;
+            }
+        }
+
+        // Release jump button
+        if (Input.GetButtonUp("Jump"))
+        {
+            _isJumping = false;
+        }
+    }
+
+    private void HandleGravity()
+    {
+        if (_rb.linearVelocity.y < 0)
+        {
+            _rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+    }
+
+    private void UpdateAnimations()
+    {
+        _animator.SetBool("Grounded", IsGrounded());
+        _animator.SetFloat("VerticalVelocity", _rb.linearVelocity.y);
+    }
+
+    private void CheckGrounded()
+    {
+        _animator.SetBool("Grounded", IsGrounded());
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    // Visualize ground check radius
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
 }
