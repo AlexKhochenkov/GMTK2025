@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 56f5373cdb01f7241b48670546f3b348
+guid: 8f89bc5d5d93c444b85466c0e7a459f2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7719800848552493795
-    second: MR Cookies_Hit_48x48_0
-  - first:
-      213: 5145763359424384667
-    second: MR Cookies_Hit_48x48_1
-  - first:
-      213: 8616765012107151476
-    second: MR Cookies_Hit_48x48_2
+      213: 7282461348544508605
+    second: Background2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -80,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -119,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MR Cookies_Hit_48x48_0
+      name: Background2_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 3
-        width: 17
-        height: 18
+        x: 0
+        y: 0
+        width: 192
+        height: 108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,52 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3e20bb278fd322b60800000000000000
-      internalID: 7719800848552493795
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MR Cookies_Hit_48x48_1
-      rect:
-        serializedVersion: 2
-        x: 59
-        y: 3
-        width: 17
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b9e06b0138c696740800000000000000
-      internalID: 5145763359424384667
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MR Cookies_Hit_48x48_2
-      rect:
-        serializedVersion: 2
-        x: 107
-        y: 3
-        width: 17
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 47849abff16e49770800000000000000
-      internalID: 8616765012107151476
+      spriteID: db2f18a2300801560800000000000000
+      internalID: 7282461348544508605
       vertices: []
       indices: 
       edges: []
@@ -198,9 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MR Cookies_Hit_48x48_0: 7719800848552493795
-      MR Cookies_Hit_48x48_1: 5145763359424384667
-      MR Cookies_Hit_48x48_2: 8616765012107151476
+      Background2_0: 7282461348544508605
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
