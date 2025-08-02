@@ -24,8 +24,21 @@ public class PlayerController : MonoBehaviour
     private float _coyoteTimeCounter;
     private float _jumpBufferCounter;
 
+    public event Action Died;
+
+    public static PlayerController Player { get; private set; }
+
     void Start()
     {
+        if (Player is null)
+        {
+            Player = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _rb.freezeRotation = true;
@@ -135,5 +148,11 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+    }
+
+    public void Die()
+    {
+        Died?.Invoke();
+        Debug.Log("Died");
     }
 }
