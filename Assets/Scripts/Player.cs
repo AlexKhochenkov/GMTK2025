@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Animator _animator;
+    private AudioSource _audioSource;
+    private bool _jumpSoundPlayed = false;
     private bool _isJumping;
     private float _jumpTimeCounter;
     private float _coyoteTimeCounter;
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
         
+        _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _rb.freezeRotation = true;
@@ -49,6 +52,7 @@ public class PlayerController : MonoBehaviour
         HandleCoyoteTime();
         HandleJumpBuffer();
         HandleJump();
+        HandleJumpSound();
         HandleGravity();
         UpdateAnimations();
     }
@@ -84,18 +88,20 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        // Start jump
         if (_jumpBufferCounter > 0 && _coyoteTimeCounter > 0)
         {
             _isJumping = true;
             _jumpTimeCounter = maxJumpTime;
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
             _jumpBufferCounter = 0;
-
+            if (!_jumpSoundPlayed)
+            {
+                _audioSource.Play();
+                _jumpSoundPlayed = true;
+            }
             if (jumpParticles) jumpParticles.Play();
         }
 
-        // Hold jump for variable height
         if (Input.GetButton("Jump") && _isJumping)
         {
             if (_jumpTimeCounter > 0)
@@ -109,7 +115,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Release jump button
         if (Input.GetButtonUp("Jump"))
         {
             _isJumping = false;
@@ -133,6 +138,14 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         _animator.SetBool("Grounded", IsGrounded());
+    }
+
+    private void HandleJumpSound()
+    {
+        if (IsGrounded() && _jumpSoundPlayed)
+        {
+            _jumpSoundPlayed = false;
+        }
     }
 
     private bool IsGrounded()
