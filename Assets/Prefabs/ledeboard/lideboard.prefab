@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recordPrefab: {fileID: -1024570756328210366, guid: 980e86af03e36e47f8cebeb3c05fbb24, type: 3}
   _content: {fileID: 3737442876890084035}
+  obj: {fileID: 3034572319011094180}
 --- !u!1 &3954333980961920906
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +912,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 980e86af03e36e47f8cebeb3c05fbb24, type: 3}
+--- !u!114 &3034572319011094180 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -1024570756328210366, guid: 980e86af03e36e47f8cebeb3c05fbb24, type: 3}
+  m_PrefabInstance: {fileID: 6618894116471078630}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd891e2a46eeeba66b7e83c6e7314fcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8394266561108765037 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3433262265149527947, guid: 980e86af03e36e47f8cebeb3c05fbb24, type: 3}
