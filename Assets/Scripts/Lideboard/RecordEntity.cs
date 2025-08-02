@@ -10,7 +10,12 @@ public class RecordEntity : MonoBehaviour
     public void SetValues(string nickname, float time, int runs, bool itsMe = false)
     {
         _nickname.text = nickname;
-        _best_time.text = time.ToString();
+        if (time > 60)
+            _best_time.text = $"{(int)(time / 60)}m {(int)(time % 60)}s";
+        else
+        {
+            _best_time.text = $"{(int)(time % 60)}s";
+        }
         _runs.text = runs.ToString();
         if (itsMe)
         {
