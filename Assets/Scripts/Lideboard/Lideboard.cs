@@ -22,6 +22,7 @@ public class Lideboard : MonoBehaviour
         var records = await WebFetcher.WebFetcher.GetRecords(10);
         foreach (var r in records)
         {
+            Debug.Log(r);
             var obj = Instantiate(_recordPrefab, _content);
             obj.SetValues(r.nickname, r.best_time, r.runs);
         }

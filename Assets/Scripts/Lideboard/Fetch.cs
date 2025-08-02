@@ -24,7 +24,7 @@ namespace WebFetcher
 
         public override string ToString()
         {
-            return $"nickname: {nickname}\nbest_run: {best_time}\n runs: {runs}";
+            return $"nickname: {nickname}\nbest_run: {best_time}\n runs: {runs}\ntotal_time: {total_time}";
         }
     }
 
