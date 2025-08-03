@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace WebFetcher
 {
@@ -15,21 +13,17 @@ namespace WebFetcher
     class Record
     {
         public string nickname;
-
         public float best_time;
-
         public int runs;
-
         public float total_time;
 
         public override string ToString()
         {
-            return $"nickname: {nickname}\nbest_run: {best_time}\n runs: {runs}\ntotal_time: {total_time}";
+            return $"nickname: {nickname}\nbest_run: {best_time}\nruns: {runs}\ntotal_time: {total_time}";
         }
     }
 
-    // Обертка для десериализации массива
-    [System.Serializable]
+    [Serializable]
     class RecordListWrapper
     {
         public Record[] records;
@@ -39,87 +33,80 @@ namespace WebFetcher
     {
         const string ipString = "62.84.121.113";
         const int port = 8000;
-        static readonly HttpClient client = new HttpClient();
         static readonly string baseUrl = $"http://{ipString}:{port}";
 
-        // Генерация контрольной суммы (MD5(nickname:time))
         private static string GenerateChecksum(string nickname, float time)
         {
-            // Форматируем время с 2 знаками после запятой
             string data = $"{nickname}:{Math.Round(time + 2435.4558, 4).ToString().Replace(",", ".")}";
-
             using (MD5 md5 = MD5.Create())
             {
                 byte[] inputBytes = Encoding.UTF8.GetBytes(data);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
-
                 StringBuilder sb = new StringBuilder();
-                foreach (byte b in hashBytes)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
+                foreach (byte b in hashBytes) sb.Append(b.ToString("x2"));
                 return sb.ToString();
             }
         }
 
         public static async Task<List<Record>> GetRecords(int topN)
         {
-            try
+            string url = $"{baseUrl}/top_records?n={topN}";
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                string url = $"{baseUrl}/top_records?n={topN}";
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                await request.SendWebRequest();
 
-                string responseBody = await response.Content.ReadAsStringAsync();
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"Error getting records: {request.error}");
+                    return new List<Record>();
+                }
+
+                string responseBody = request.downloadHandler.text;
                 Debug.Log(responseBody);
                 string wrappedJson = $"{{\"records\": {responseBody}}}";
                 return JsonUtility.FromJson<RecordListWrapper>(wrappedJson).records.ToList();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.LogError($"Error getting records: {e.Message}");
-                return new List<Record>();
             }
         }
 
         public static async Task<Record> GetRecordByName(string nickname)
         {
-            try
+            string url = $"{baseUrl}/record/{UnityWebRequest.EscapeURL(nickname)}";
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                string url = $"{baseUrl}/record/{Uri.EscapeDataString(nickname)}";
-                HttpResponseMessage response = await client.GetAsync(url);
+                await request.SendWebRequest();
 
-                if (response.StatusCode == HttpStatusCode.NotFound)
+                if (request.responseCode == 404)
                     return null;
 
-                response.EnsureSuccessStatusCode();
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"Error getting record: {request.error}");
+                    return null;
+                }
 
-                string responseBody = await response.Content.ReadAsStringAsync();
+                string responseBody = request.downloadHandler.text;
                 return JsonUtility.FromJson<Record>(responseBody);
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.LogError($"Error getting record: {e.Message}");
-                return null;
             }
         }
 
         public static async Task<bool> AddRecord(string nickname, float time)
         {
-            try
+            string checksum = GenerateChecksum(nickname, time);
+            string url = $"{baseUrl}/add_record?nickname={UnityWebRequest.EscapeURL(nickname)}" +
+                         $"&time={time.ToString().Replace(",", ".")}" +
+                         $"&checksum={checksum}";
+
+            using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
             {
-                string checksum = GenerateChecksum(nickname, time);
-                string url = $"{baseUrl}/add_record?nickname={Uri.EscapeDataString(nickname)}&time={time.ToString().Replace(",", ".")}&checksum={checksum}";
+                await request.SendWebRequest();
 
-                HttpResponseMessage response = await client.PostAsync(url, null);
-                response.EnsureSuccessStatusCode();
 
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"Error adding record: {request.error}");
+                    return false;
+                }
                 return true;
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.LogError($"Error adding record: {e.Message}");
-                return false;
             }
         }
     }
