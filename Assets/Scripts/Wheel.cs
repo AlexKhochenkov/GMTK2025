@@ -34,13 +34,13 @@ public class Wheel : MonoBehaviour
         if (!_isAccelerating) return;
 
         _timer += Time.deltaTime;
-        
+
         float normalizedTime = Mathf.Clamp01(_timer / _accelTime);
-        
+
         float curveValue = _accelCurve.Evaluate(normalizedTime);
-        
+
         float currentSpeed = Mathf.Lerp(_startSpeed, _maxSpeed, curveValue);
-        
+
         _rb.angularVelocity = clockwise ? currentSpeed : -currentSpeed;
 
         if (_timer >= _accelTime)
@@ -53,20 +53,20 @@ public class Wheel : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if (_accelCurve == null) return;
-        
+
         GUIStyle style = new GUIStyle();
         style.normal.textColor = Color.white;
-        
+
         for (float t = 0; t <= 1; t += 0.1f)
         {
             float speed = Mathf.Lerp(_startSpeed, _maxSpeed, _accelCurve.Evaluate(t));
             Vector3 labelPos = transform.position + Vector3.up * 0.5f + Vector3.right * t;
             Debug.DrawLine(
-                transform.position + Vector3.right * t, 
+                transform.position + Vector3.right * t,
                 transform.position + Vector3.right * t + Vector3.up * (speed / _maxSpeed),
                 Color.green
             );
-            UnityEditor.Handles.Label(labelPos, $"{speed:F0}", style);
+            //UnityEditor.Handles.Label(labelPos, $"{speed:F0}", style);
         }
     }
 }

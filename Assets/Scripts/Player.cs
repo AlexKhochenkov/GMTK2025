@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private float _jumpTimeCounter;
     private float _coyoteTimeCounter;
     private float _jumpBufferCounter;
-    private bool _isFastFalling; // Флаг быстрого падения
+    private bool _isFastFalling;
 
     public delegate void DiedEvent();
     public event DiedEvent Died;
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         HandleCoyoteTime();
         HandleJumpBuffer();
         HandleJump();
-        HandleFastFall(); // Обработка быстрого падения
+        HandleFastFall();
         HandleJumpSound();
         HandleGravity();
         UpdateAnimations();
@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJumpBuffer()
     {
-        // Прыжок по Space, W или ЛКМ
         if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W) || Input.GetMouseButtonDown(0))
         {
             _jumpBufferCounter = jumpBufferTime;
@@ -108,7 +107,6 @@ public class PlayerController : MonoBehaviour
             if (jumpParticles) jumpParticles.Play();
         }
 
-        // Удержание прыжка по Space, W или ЛКМ
         if ((Input.GetButton("Jump") || Input.GetKey(KeyCode.W) || Input.GetMouseButton(0)) && _isJumping)
         {
             if (_jumpTimeCounter > 0)
@@ -122,7 +120,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Прекращение прыжка при отпускании
         if (Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W) || Input.GetMouseButtonUp(0))
         {
             _isJumping = false;
@@ -131,7 +128,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleFastFall()
     {
-        // Активация быстрого падения по Shift, S или ПКМ
         _isFastFalling = !IsGrounded() &&
                          (Input.GetKey(KeyCode.LeftShift) ||
                          Input.GetKey(KeyCode.S) ||

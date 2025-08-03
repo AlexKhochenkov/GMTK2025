@@ -28,13 +28,12 @@ namespace WebFetcher
         }
     }
 
-    // Обертка для десериализации массива
     [System.Serializable]
     class RecordListWrapper
     {
         public Record[] records;
     }
-    
+
     static class WebFetcher
     {
         const string ipString = "62.84.121.113";
@@ -42,10 +41,8 @@ namespace WebFetcher
         static readonly HttpClient client = new HttpClient();
         static readonly string baseUrl = $"http://{ipString}:{port}";
 
-        // Генерация контрольной суммы (MD5(nickname:time))
         private static string GenerateChecksum(string nickname, float time)
         {
-            // Форматируем время с 2 знаками после запятой
             string data = $"{nickname}:{Math.Round(time + 2435.4558, 4).ToString().Replace(",", ".")}";
 
             using (MD5 md5 = MD5.Create())

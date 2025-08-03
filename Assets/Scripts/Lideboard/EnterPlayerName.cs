@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class EnterPlayerName : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private TMP_InputField playerNameInput;
     [SerializeField] private TMP_Text fiveLettersEntry;
     [SerializeField] private GameObject inGameInterface;

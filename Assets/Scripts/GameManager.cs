@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using UnityEditor.PackageManager;
+//using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     void OnDestroy()
     {
-        if(PlayerController.Player != null)
+        if (PlayerController.Player != null)
             PlayerController.Player.Died -= new PlayerController.DiedEvent(EndGame);
         Instance = null;
     }
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
             }
         }
         if (GameStarted)
-                score.AddScore(Time.deltaTime);
+            score.AddScore(Time.deltaTime);
     }
 
     public void RestartGame()

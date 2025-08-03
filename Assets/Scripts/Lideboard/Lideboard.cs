@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEditor.Build.Content;
+//using UnityEditor.Build.Content;
 using UnityEngine;
 using WebFetcher;
 
 public class Lideboard : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [SerializeField] private RecordEntity _recordPrefab;
     [SerializeField] private Transform _content;
@@ -26,7 +25,7 @@ public class Lideboard : MonoBehaviour
 
     public async Task UpdateLideboardAsync()
     {
-        
+
         var records = await WebFetcher.WebFetcher.GetRecords(10);
         DrawRecords(records);
     }
