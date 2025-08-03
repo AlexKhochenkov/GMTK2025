@@ -13,9 +13,6 @@ public class DeleteAfterStart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W) || Input.GetMouseButtonDown(0))
-        {
-            GameManager.Instance.StartGame();
-        }
+        
     }
 }

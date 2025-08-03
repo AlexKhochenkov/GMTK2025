@@ -38,7 +38,7 @@ public class Score : MonoBehaviour
 
         bestScore.text = Math.Round(best,2).ToString(CultureInfo.InvariantCulture);
 
-        looping.text = $"You've been looping for {bestResult.total_time} in {bestResult.runs} runs";
+        looping.text = $"You've been looping for {Math.Round(bestResult.total_time)} seconds in {bestResult.runs} runs";
     }
 
     private void SetUiValue()

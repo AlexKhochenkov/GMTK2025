@@ -10,10 +10,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Score score;
     [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameObject _loginScreen;
 
     public static GameManager Instance { get; private set; }
 
     [field: SerializeField] public bool GameStarted { get; private set; }
+
+    public bool GameEnded { get; private set; }
 
     public void StartGame()
     {
@@ -43,19 +46,27 @@ public class GameManager : MonoBehaviour
 
     void EndGame()
     {
-        if (!GameStarted)
+        if (!GameStarted || GameEnded)
         {
             return;
         }
         GameStarted = false;
+        GameEnded = true;
         endScreen.SetActive(true);
         score.SetBestScore();
     }
 
     void Update()
     {
+        if (!GameStarted && !_loginScreen.activeSelf && !GameEnded)
+        {
+            if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W) || Input.GetMouseButtonDown(0))
+            {
+                StartGame();
+            }
+        }
         if (GameStarted)
-            score.AddScore(Time.deltaTime);
+                score.AddScore(Time.deltaTime);
     }
 
     public void RestartGame()
