@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -16,14 +17,20 @@ public class Wheel : MonoBehaviour
     private float _timer;
     private bool _isAccelerating = true;
 
-    void Start()
+    IEnumerator Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        yield return new WaitUntil(() => GameManager.Instance.GameStarted);
         _rb.angularVelocity = clockwise ? _startSpeed : -_startSpeed;
     }
 
     void Update()
     {
+        if (!GameManager.Instance.GameStarted)
+        {
+            _rb.angularVelocity = 0;
+            return;
+        }
         if (!_isAccelerating) return;
 
         _timer += Time.deltaTime;

@@ -25,12 +25,14 @@ public class PlayerController : MonoBehaviour
     private float _jumpTimeCounter;
     private float _coyoteTimeCounter;
     private float _jumpBufferCounter;
+    private bool _isFastFalling; // Флаг быстрого падения
 
-    public event Action Died;
+    public delegate void DiedEvent();
+    public event DiedEvent Died;
 
     public static PlayerController Player { get; private set; }
 
-    void Start()
+    void Awake()
     {
         if (Player is null)
         {
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
@@ -49,9 +51,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.Instance.GameStarted)
+            return;
         HandleCoyoteTime();
         HandleJumpBuffer();
         HandleJump();
+        HandleFastFall(); // Обработка быстрого падения
         HandleJumpSound();
         HandleGravity();
         UpdateAnimations();
@@ -76,7 +81,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJumpBuffer()
     {
-        if (Input.GetButtonDown("Jump"))
+        // Прыжок по Space, W или ЛКМ
+        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W) || Input.GetMouseButtonDown(0))
         {
             _jumpBufferCounter = jumpBufferTime;
         }
@@ -102,7 +108,8 @@ public class PlayerController : MonoBehaviour
             if (jumpParticles) jumpParticles.Play();
         }
 
-        if (Input.GetButton("Jump") && _isJumping)
+        // Удержание прыжка по Space, W или ЛКМ
+        if ((Input.GetButton("Jump") || Input.GetKey(KeyCode.W) || Input.GetMouseButton(0)) && _isJumping)
         {
             if (_jumpTimeCounter > 0)
             {
@@ -115,17 +122,28 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Jump"))
+        // Прекращение прыжка при отпускании
+        if (Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W) || Input.GetMouseButtonUp(0))
         {
             _isJumping = false;
         }
     }
 
+    private void HandleFastFall()
+    {
+        // Активация быстрого падения по Shift, S или ПКМ
+        _isFastFalling = !IsGrounded() &&
+                         (Input.GetKey(KeyCode.LeftShift) ||
+                         Input.GetKey(KeyCode.S) ||
+                         Input.GetMouseButton(1));
+    }
+
     private void HandleGravity()
     {
-        if (_rb.linearVelocity.y < 0)
+        if (_rb.linearVelocity.y < 0 || _isFastFalling)
         {
-            _rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            float multiplier = fallMultiplier;
+            _rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (multiplier - 1) * Time.deltaTime;
         }
     }
 
@@ -153,7 +171,6 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    // Visualize ground check radius
     private void OnDrawGizmosSelected()
     {
         if (groundCheck)
@@ -167,5 +184,10 @@ public class PlayerController : MonoBehaviour
     {
         Died?.Invoke();
         Debug.Log("Died");
+    }
+
+    void OnDestroy()
+    {
+        Player = null;
     }
 }

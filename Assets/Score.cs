@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using TMPro;
@@ -13,7 +14,7 @@ public class Score : MonoBehaviour
     [SerializeField] private Lideboard lideboard;
     [SerializeField] private TMP_Text looping;
 
-    public void AddScore(int addValue)
+    public void AddScore(float addValue)
     {
         value += addValue;
         SetUiValue();
@@ -35,14 +36,14 @@ public class Score : MonoBehaviour
 
         lideboard.UpdateLideboard();
 
-        bestScore.text = best.ToString(CultureInfo.InvariantCulture);
+        bestScore.text = Math.Round(best,2).ToString(CultureInfo.InvariantCulture);
 
         looping.text = $"You've been looping for {bestResult.total_time} in {bestResult.runs} runs";
     }
 
     private void SetUiValue()
     {
-        score.text = value.ToString(CultureInfo.InvariantCulture);
-        finalScore.text = value.ToString(CultureInfo.InvariantCulture);
+        score.text = Math.Round(value,2).ToString(CultureInfo.InvariantCulture);
+        finalScore.text =  Math.Round(value,2).ToString(CultureInfo.InvariantCulture);
     }
 }
